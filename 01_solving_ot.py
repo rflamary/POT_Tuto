@@ -131,5 +131,18 @@ T_entropic = res_entropic.plan
 plot_transport_plan(x_s, x_t, T_entropic)
 
 
+#%% Visualizing the dual potentials
+# The dual potentials are functions that can be used to compute the optimal
 
 
+f,g  = ot.solve_sample(x_s, x_t, metric='euclidean').potentials
+
+
+plt.figure(4, figsize=(6, 6))
+
+plt.scatter(x_s[:, 0], x_s[:, 1], s=w_s*scale, label='Source', c=f, edgecolors='k')
+plt.scatter(x_t[:, 0], x_t[:, 1], s=w_t*scale, label='Target', c=g, edgecolors='k')
+plt.colorbar(label='Dual Potentials')
+plt.legend()
+plt.title('Dual Potentials for Source and Target Distributions')
+plt.show()
