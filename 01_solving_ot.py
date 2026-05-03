@@ -31,8 +31,8 @@ def get_source_and_target(n_s=100, n_t=None):
 
     return x_source, x_target
 
-n_s = 100  # Number of source points
-n_t = 150  # Number of target points
+n_s = 50  # Number of source points
+n_t = 100  # Number of target points
 
 x_s, x_t = get_source_and_target(n_s=n_s, n_t=n_t)
 
@@ -122,7 +122,7 @@ plot_transport_plan(x_s, x_t, T_emp)
 # The entropic regularized OT problem adds an entropy term to the objective
 # function, which encourages the transport plan to be more spread out. 
 
-reg = 0.05  # Regularization parameter
+reg = 0.01  # Regularization parameter
 res_entropic = ot.solve_sample(x_s, x_t, metric='euclidean', reg=reg)
 ot_value_entropic = res_entropic.value
 print(f'Entropic regularized optimal transport cost: {ot_value_entropic:.4f}')
