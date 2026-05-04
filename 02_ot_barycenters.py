@@ -106,16 +106,19 @@ plt.show()
 alpha= 0.5
 w = np.array([1-alpha, alpha])  # Uniform weights for the barycenter
 
-n_bary = 10  # Number of points in the barycenter support
+n_bary = 50  # Number of points in the barycenter support
 X_init = np.random.randn(n_bary, 2)  # Initial support for the barycenter
 
 X_bary = ot.lp.free_support_barycenter(lst_dist, lst_dist_weights, X_init=X_init, weights=w)
+
+#X_bary_reg = ot.bregman.free_support_sinkhorn_barycenter(lst_dist, lst_dist_weights, X_init=X_init, weights=w, reg=1e-1)
 
 # plotting the barycenter
 plt.figure(1, figsize=(6, 6))
 plt.scatter(x_1[:, 0], x_1[:, 1], label='Distribution 1', alpha=0.2)
 plt.scatter(x_2[:, 0], x_2[:, 1], label='Distribution 2', alpha=0.2)
 plt.scatter(X_bary[:, 0], X_bary[:, 1], label='Barycenter', c='C3')
+#plt.scatter(X_bary_reg[:, 0], X_bary_reg[:, 1], label='Barycenter (Regularized)', c='C4')
 plt.title('Free Support Barycenter')
 plt.legend()
 plt.show()
