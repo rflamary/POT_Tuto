@@ -70,3 +70,97 @@ plt.title('Distance vs. Shift')
 pl.grid()
 plt.legend()
 plt.show()
+
+#%% computational time comparison
+
+n_list = np.logspace(2, 4, 10, dtype=int)
+sw_times = []
+w_times = []
+
+for n in n_list:
+    x1, x2 = get_source_and_target(n_s=n, n_t=n, delta=delta)
+    
+    ot.tic()
+    ot.sliced_wasserstein_distance(x1, x2, n_projections=100)
+    sw_times.append(ot.toc())
+
+    ot.tic()
+    ot.solve_sample(x1, x2, metric='sqeuclidean').value**0.5
+    w_times.append(ot.toc())
+
+plt.figure(3, figsize=(6, 3))
+plt.plot(n_list, sw_times, 'o-', label='Sliced Wasserstein Time')
+plt.plot(n_list, w_times, 's-', label='Wasserstein Time')
+plt.xlabel('Number of Points')
+plt.ylabel('Time (s)')
+plt.title('Sliced Wasserstein Computational Time')
+plt.xscale('log')
+plt.yscale('log')
+plt.grid()
+plt.legend()
+plt.show()
+
+
+#%% Computing the sliced Wasserstein barycenter with optimization
+
+n_s = 50  # Number of source points
+n_t = 100  # Number of target points
+
+delta = 8
+
+x1, x2 = get_source_and_target(n_s=n_s, n_t=n_t, delta=delta)
+X1 = torch.tensor(x1, dtype=torch.float32)
+X2 = torch.tensor(x2, dtype=torch.float32)
+
+alpha = 0.5
+n_bary = 50
+
+X_init = torch.randn(n_bary, 2, requires_grad=True)
+
+optimizer = torch.optim.Adam([X_init], lr=0.1)
+n_iters = 100
+
+n_projections = 100
+
+losses = []
+
+seed = 0
+
+for i in range(n_iters):
+
+    optimizer.zero_grad()
+    
+    loss1 = ot.sliced_wasserstein_distance(X_init, X1, n_projections=n_projections,seed=seed)**2
+    loss2 = ot.sliced_wasserstein_distance(X_init, X2, n_projections=n_projections,seed=seed)**2
+
+    loss = alpha*loss2 + (1-alpha)*loss1
+
+    losses.append(loss.item())
+    
+    loss.backward()
+
+
+    optimizer.step()
+
+    if (i+1) % 10 == 0:
+        print(f'Iteration {i+1}/{n_iters}, Sliced Wasserstein Distance: {loss.item():.4f}')
+
+# plotting the loss curve
+plt.figure(4, figsize=(6, 3))
+plt.plot(losses)
+plt.title('Sliced Wasserstein Barycenter Optimization')
+plt.xlabel('Iteration')
+plt.ylabel('Loss')
+plt.grid()
+plt.show()
+
+# plotting the barycenter
+plt.figure(5, figsize=(6, 3))
+plt.scatter(X1[:, 0].detach().numpy(), X1[:, 1].detach().numpy(), label='Distribution 1', alpha=0.5)
+plt.scatter(X2[:, 0].detach().numpy(), X2[:, 1].detach().numpy(), label='Distribution 2', alpha=0.5)
+plt.scatter(X_init[:, 0].detach().numpy(), X_init[:, 1].detach().numpy(), label='Sliced Wasserstein Barycenter', alpha=0.5, color='red')
+plt.title('Sliced Wasserstein Barycenter')
+plt.legend(loc='lower right')
+plt.show()  
+
+
