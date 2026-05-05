@@ -51,8 +51,8 @@ plt.show()
 
 n_iters = 100
 lr =  5
-reg = None
-metric = 'euclidean'
+reg = 1
+metric = 'sqeuclidean'
 
 X_init = torch.tensor(X_init0, dtype=torch.float32, requires_grad=True)
 
