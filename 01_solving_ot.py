@@ -1,9 +1,13 @@
+# -*- coding: utf-8 -*-
 # 01 Solving OT porblems with POT
 # =========================      
 # In this notebook, we will see how to solve optimal transport problems with the
 # Python Optimal Transport (POT) library. We will start by importing the
 # necessary libraries and defining our source and target distributions.
 
+# Author: Rémi Flamary
+#
+# License: MIT License
 
 #%% Importing libraries
 import numpy as np

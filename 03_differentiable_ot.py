@@ -1,7 +1,12 @@
+# -*- coding: utf-8 -*-
 # 03 Differentiable Optimal Transport solvers
 # ============================================
 # In this notebook, we will explore how to use differentiable optimal transport
 # solvers with the POT library. 
+
+# Author: Rémi Flamary
+#
+# License: MIT License
 
 #%% Importing libraries
 import numpy as np

@@ -1,6 +1,11 @@
+# -*- coding: utf-8 -*-
 # 04 Sliced Wasserstein Distance
 # ==============================
 # 
+
+# Author: Rémi Flamary
+#
+# License: MIT License
 
 #%% importing libraries
 import numpy as np

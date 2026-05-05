@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # 02_OT_Barycenters
 # =================
 # In this notebook, we will see how to compute Wasserstein barycenters with the
@@ -5,6 +6,9 @@
 # weighted sum of Wasserstein distances to a set of input distributions. We will
 # show how to compute both fixed support and free support barycenters.
 
+# Author: Rémi Flamary
+#
+# License: MIT License
 
 #%% Importing libraries
 import numpy as np
